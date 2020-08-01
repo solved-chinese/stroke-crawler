@@ -1,6 +1,7 @@
 # Project files
-secrets.py
-token.pickle
+secrets
+gifs
+*.gif
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
