@@ -49,7 +49,7 @@ def _download_gdrive(file, download_request):
     done = False
     while not done:
         status, done = downloader.next_chunk()
-        print('Downloading {}%'.format(status.progress() * 100))
+        print('[INFO] Downloading {}%'.format(status.progress() * 100))
 
 
 def fetch_from_gdrive():

@@ -3,6 +3,10 @@ from pathlib import Path
 from secrets import COOKIE
 
 
+# General Configs
+SHOW_DEBUG = False
+SHOW_PROGRESS_BAR = True
+
 # GIF Configs
 STROKE_COLOR = '000000'
 TRANSIENT_COLOR = 'be132c'
