@@ -77,32 +77,41 @@ else:
         print('[ERROR] Uncaught exception ({}): {} when fetching characters list from Google Drive'.format(e.__class__.__name__, e))
         exit()
 
-max_id = characters['id'].max()
+# Clean dataframe
+characters = characters[characters.id.notnull()]
+characters = characters[characters.chinese.notnull()]
+
+total_num = len(characters)
 if SHOW_DEBUG:
-    print('[DEBUG] Total {:0.0f} characters'.format(max_id))
+    print('[DEBUG] Total {} characters'.format(total_num))
 if SHOW_PROGRESS_BAR:
-    progress_bar = tqdm(total=max_id)
+    progress_bar = tqdm(total=total_num)
 
 for index, row in characters.iterrows():
     # Get GIF source URL
-    if isnull(row['id']) or isnull(row['chinese']):
-        continue
-    msg = 'Downloading "{}" (C{:04.0f})'.format(row['chinese'], row['id'])
+    char = row.chinese
+    char_id = row.id
+    formatted_id = 'C{:04.0f}'.format(char_id)
+
+    msg = 'Downloading "{}" ({})'.format(char, formatted_id)
     if SHOW_DEBUG:
         print('[DEBUG] {}'.format(msg))
     if SHOW_PROGRESS_BAR:
         progress_bar.set_description(msg)
         progress_bar.update(1)
 
-    form_data.update({'input': row['chinese']})
+    form_data.update({'input': char})
     processed_data = process_form_data(form_data)
     req = requests.post(URL, headers=HEADERS, data=processed_data)
     soup = BeautifulSoup(req.content, 'html.parser')
     img = soup.select('#stroke_order_0')
+    if not img:
+        print('[ERROR] Failed to locate image file for "{}" ({})'.format(char, formatted_id))
+        continue
     img_src = img[0].get('data-original')
 
     # Download GIF
-    filename = 'C{:04.0f}.gif'.format(row['id'])
+    filename = '{}.gif'.format(formatted_id)
     download_image(img_src, filename)
 
 if SHOW_PROGRESS_BAR:

@@ -10,7 +10,7 @@ SHOW_PROGRESS_BAR = True
 # GIF Configs
 STROKE_COLOR = '000000'
 TRANSIENT_COLOR = 'be132c'
-BACKGROUND_COLOR = 'fffefc'
+BACKGROUND_COLOR = 'ffffff'
 SPEED = 'fast' # 'veryslow', 'slow', 'normal', 'fast'
 
 # Files and Directories
